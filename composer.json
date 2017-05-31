@@ -1,0 +1,27 @@
+{
+    "name": "msp/phpids",
+    "description": "MageSPecialist PHP-IDS porting for MSP Magento2 SecuritySuite",
+    "license": "LGPL-3.0+",
+    "homepage": "http://phpids.org",
+    "authors": [
+        {
+            "name": "Lars Strojny",
+            "email": "lars@strojny.net"
+        },
+        {
+            "name": "Riccardo Tempesta",
+            "email": "riccardo.tempesta@magespecialist.it"
+        }
+    ],
+    "require": {
+        "ezyang/htmlpurifier": "*"
+    },
+    "suggest": {
+        "msp/security-suite": "Full MageSpecialist Security Suite"
+    },
+    "autoload": {
+        "psr-0": {
+            "IDS": "lib/"
+        }
+    }
+}
