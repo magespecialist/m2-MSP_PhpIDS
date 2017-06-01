@@ -208,6 +208,34 @@ class Monitor
      */
     private function detect($key, $value)
     {
+        // Explode JSON encapsulated arguments
+        try {
+            $decoded = null;
+
+            if ($value && is_string($value)) {
+                if (($value[0] == '{') || ($value[0] == '[')) {
+                    $decoded = json_decode($value, true);
+                }
+            } elseif (is_array($value)) {
+                $decoded = $value;
+            }
+
+            if ($decoded) {
+                $allFilters = array();
+                foreach ($decoded as $k => $v) {
+                    $filters = $this->detect($k, $v);
+
+                    foreach ($filters as $filter) {
+                        $allFilters[] = $filter;
+                    }
+                }
+
+                return $allFilters;
+            }
+        } catch (\Exception $e) {
+
+        }
+
         // define the pre-filter
         $preFilter = '([^\w\s/@!?\.]+|(?:\./)|(?:@@\w+)|(?:\+ADw)|(?:union\s+select))i';
 
@@ -268,7 +296,6 @@ class Monitor
 
         return $filterSet;
     }
-
 
     /**
      * Purifies given key and value variables using HTMLPurifier
