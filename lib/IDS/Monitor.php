@@ -81,16 +81,6 @@ class Monitor
     public $scanKeys = false;
 
     /**
-     * Exception container
-     *
-     * Using this array it is possible to define variables that must not be
-     * scanned. Per default, utmz google analytics parameters are permitted.
-     *
-     * @var array
-     */
-    private $exceptions = array();
-
-    /**
      * Html container
      *
      * Using this array it is possible to define variables that legally
@@ -145,7 +135,6 @@ class Monitor
         $this->storage    = new Storage($init, $magentoCache);
         $this->tags       = $tags;
         $this->scanKeys   = $init->config['General']['scan_keys'];
-        $this->exceptions = isset($init->config['General']['exceptions']) ? $init->config['General']['exceptions'] : array();
         $this->html       = isset($init->config['General']['html'])       ? $init->config['General']['html'] : array();
         $this->json       = isset($init->config['General']['json'])       ? $init->config['General']['json'] : array();
 
@@ -242,14 +231,6 @@ class Monitor
         // to increase performance, only start detection if value isn't alphanumeric
         if ((!$this->scanKeys || !$key || !preg_match($preFilter, $key)) && (!$value || !preg_match($preFilter, $value))) {
             return array();
-        }
-
-        // check if this field is part of the exceptions
-        foreach ($this->exceptions as $exception) {
-            $matches = array();
-            if (($exception === $key) || preg_match('((/.*/[^eE]*)$)', $exception, $matches) && isset($matches[1]) && preg_match($matches[1], $key)) {
-                return array();
-            }
         }
 
         // check for magic quotes and remove them if necessary
@@ -481,28 +462,6 @@ class Monitor
         } else {
             $this->jsonDecodeValues(json_encode($key), json_encode($value));
         }
-    }
-
-    /**
-     * Sets exception array
-     *
-     * @param string[]|string $exceptions the thrown exceptions
-     *
-     * @return void
-     */
-    public function setExceptions($exceptions)
-    {
-        $this->exceptions = (array) $exceptions;
-    }
-
-    /**
-     * Returns exception array
-     *
-     * @return array
-     */
-    public function getExceptions()
-    {
-        return $this->exceptions;
     }
 
     /**

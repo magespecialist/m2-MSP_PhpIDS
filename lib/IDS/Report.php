@@ -276,7 +276,7 @@ class Report implements \Countable, \IteratorAggregate
         $output = '';
         if (!$this->isEmpty()) {
             $output .= vsprintf(
-                "Total impact: %d<br/>\nAffected tags: %s<br/>\n",
+                "Total impact: %d\nAffected tags: %s\n",
                 array(
                     $this->getImpact(),
                     implode(', ', $this->getTags())
@@ -285,7 +285,7 @@ class Report implements \Countable, \IteratorAggregate
 
             foreach ($this->events as $event) {
                 $output .= vsprintf(
-                    "<br/>\nVariable: %s | Value: %s<br/>\nImpact: %d | Tags: %s<br/>\n",
+                    "\nVariable: %s | Value: %s\nImpact: %d | Tags: %s\n",
                     array(
                         htmlspecialchars($event->getName()),
                         htmlspecialchars($event->getValue()),
@@ -296,7 +296,7 @@ class Report implements \Countable, \IteratorAggregate
 
                 foreach ($event as $filter) {
                     $output .= vsprintf(
-                        "Description: %s | Tags: %s | ID %s<br/>\n",
+                        "Description: %s | Tags: %s | ID %s\n",
                         array(
                             $filter->getDescription(),
                             implode(', ', $filter->getTags()),
@@ -306,20 +306,20 @@ class Report implements \Countable, \IteratorAggregate
                 }
             }
 
-            $output .= '<br/>';
+            $output .= "\n";
 
             if ($centrifuge = $this->getCentrifuge()) {
                 $output .= vsprintf(
-                    "Centrifuge detection data<br/> Threshold: %s<br/> Ratio: %s",
+                    "Centrifuge detection data\nThreshold: %s\nRatio: %s",
                     array(
                         isset($centrifuge['threshold']) && $centrifuge['threshold'] ? $centrifuge['threshold'] : '---',
                         isset($centrifuge['ratio']) && $centrifuge['ratio'] ? $centrifuge['ratio'] : '---'
                     )
                 );
                 if (isset($centrifuge['converted'])) {
-                    $output .= '<br/>  Converted: ' . $centrifuge['converted'];
+                    $output .= '\nConverted: ' . $centrifuge['converted'];
                 }
-                $output .= "<br/><br/>\n";
+                $output .= "\n\n";
             }
         }
 
